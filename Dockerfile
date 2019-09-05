@@ -1,6 +1,6 @@
-ARG CUDA_TAG=8.0
+ARG CUDA_TAG=9.2
 ARG OS_TAG=7
-FROM alicevision/alicevision:2.2.0-centos${OS_TAG}-cuda${CUDA_TAG}
+FROM pixel8earth/alicevision:latest
 LABEL maintainer="AliceVision Team alicevision-team@googlegroups.com"
 
 # Execute with nvidia docker (https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
