@@ -1,6 +1,6 @@
-ARG CUDA_TAG=8.0
+ARG CUDA_TAG=9.2
 ARG OS_TAG=7
-FROM alicevision/alicevision:2.2.0-centos${OS_TAG}-cuda${CUDA_TAG}
+FROM pixel8earth/alicevision:latest
 LABEL maintainer="AliceVision Team alicevision-team@googlegroups.com"
 
 # Execute with nvidia docker (https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
@@ -61,11 +61,11 @@ RUN curl -LO http://download.qt.io/official_releases/online_installers/qt-unifie
 WORKDIR ${MESHROOM_BUILD}
 
 # Build Meshroom plugins
-RUN cmake "${MESHROOM_DEV}" -DALICEVISION_ROOT="${AV_INSTALL}" -DQT_DIR="${QT_DIR}" -DCMAKE_INSTALL_PREFIX="${MESHROOM_BUNDLE}/qtPlugins"
+# RUN cmake "${MESHROOM_DEV}" -DALICEVISION_ROOT="${AV_INSTALL}" -DQT_DIR="${QT_DIR}" -DCMAKE_INSTALL_PREFIX="${MESHROOM_BUNDLE}/qtPlugins"
 # RUN make -j8 qtOIIO
 # RUN make -j8 qmlAlembic
 # RUN make -j8 qtAliceVision
-RUN make -j8 && cd /tmp && rm -rf ${MESHROOM_BUILD}
+# RUN make -j8 && cd /tmp && rm -rf ${MESHROOM_BUILD}
 
 RUN mv "${AV_BUNDLE}" "${MESHROOM_BUNDLE}/aliceVision"
 RUN rm -rf ${MESHROOM_BUNDLE}/aliceVision/share/doc ${MESHROOM_BUNDLE}/aliceVision/share/eigen3 ${MESHROOM_BUNDLE}/aliceVision/share/fonts ${MESHROOM_BUNDLE}/aliceVision/share/lemon ${MESHROOM_BUNDLE}/aliceVision/share/libraw ${MESHROOM_BUNDLE}/aliceVision/share/man/ aliceVision/share/pkgconfig

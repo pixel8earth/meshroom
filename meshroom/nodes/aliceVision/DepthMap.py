@@ -7,7 +7,7 @@ class DepthMap(desc.CommandLineNode):
     commandLine = 'aliceVision_depthMapEstimation {allParams}'
     gpu = desc.Level.INTENSIVE
     size = desc.DynamicNodeSize('input')
-    parallelization = desc.Parallelization(blockSize=3)
+    parallelization = desc.Parallelization(blockSize=20)
     commandLineRange = '--rangeStart {rangeStart} --rangeSize {rangeBlockSize}'
 
     inputs = [
@@ -17,7 +17,7 @@ class DepthMap(desc.CommandLineNode):
             description='SfMData file.',
             value='',
             uid=[0],
-        ),        
+        ),
         desc.File(
             name='imagesFolder',
             label='Images Folder',
@@ -87,14 +87,14 @@ class DepthMap(desc.CommandLineNode):
             uid=[0],
             advanced=True,
         ),
-        desc.IntParam( 
-            name='refineMaxTCams', 
-            label='Refine: Nb Neighbour Cameras', 
-            description='Refine: Number of neighbour cameras.', 
-            value=6, 
-            range=(1, 20, 1), 
-            uid=[0], 
-        ), 
+        desc.IntParam(
+            name='refineMaxTCams',
+            label='Refine: Nb Neighbour Cameras',
+            description='Refine: Number of neighbour cameras.',
+            value=6,
+            range=(1, 20, 1),
+            uid=[0],
+        ),
         desc.IntParam(
             name='refineNSamplesHalf',
             label='Refine: Number of Samples',
