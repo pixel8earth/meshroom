@@ -53,10 +53,10 @@ RUN source scl_source enable rh-python36 && cd "${MESHROOM_DEV}" && pip install 
 # Install Qt (to build plugins)
 WORKDIR /tmp/qt
 # Qt version in specified in docker/qt-installer-noninteractive.qs
-RUN curl -LO http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run && \
-    chmod u+x qt-unified-linux-x64-online.run && \
-    ./qt-unified-linux-x64-online.run --verbose --platform minimal --script "${MESHROOM_DEV}/docker/qt-installer-noninteractive.qs" && \
-    rm ./qt-unified-linux-x64-online.run
+# RUN curl -LO http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run && \
+#     chmod u+x qt-unified-linux-x64-online.run && \
+#     ./qt-unified-linux-x64-online.run --verbose --platform minimal --script "${MESHROOM_DEV}/docker/qt-installer-noninteractive.qs" && \
+#     rm ./qt-unified-linux-x64-online.run
 
 WORKDIR ${MESHROOM_BUILD}
 
