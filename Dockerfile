@@ -1,6 +1,6 @@
 ARG CUDA_TAG=9.2
 ARG OS_TAG=7
-FROM pixel8earth/alicevision:latest
+FROM pixel8earth/avoptimized:latest as builder
 LABEL maintainer="AliceVision Team alicevision-team@googlegroups.com"
 
 # Execute with nvidia docker (https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0))
@@ -13,7 +13,7 @@ ENV MESHROOM_DEV=/opt/Meshroom \
     PATH="${PATH}:${MESHROOM_BUNDLE}"
 
 # Workaround for qmlAlembic/qtAliceVision builds: fuse lib/lib64 folders
-RUN cp -rf ${AV_INSTALL}/lib/* ${AV_INSTALL}/lib64 && rm -rf ${AV_INSTALL}/lib && ln -s ${AV_INSTALL}/lib64 ${AV_INSTALL}/lib
+# RUN cp -rf ${AV_INSTALL}/lib/* ${AV_INSTALL}/lib64 && rm -rf ${AV_INSTALL}/lib && ln -s ${AV_INSTALL}/lib64 ${AV_INSTALL}/lib
 
 # Install libs needed by Qt
 RUN yum install -y \
@@ -70,4 +70,14 @@ WORKDIR ${MESHROOM_BUILD}
 RUN mv "${AV_BUNDLE}" "${MESHROOM_BUNDLE}/aliceVision"
 RUN rm -rf ${MESHROOM_BUNDLE}/aliceVision/share/doc ${MESHROOM_BUNDLE}/aliceVision/share/eigen3 ${MESHROOM_BUNDLE}/aliceVision/share/fonts ${MESHROOM_BUNDLE}/aliceVision/share/lemon ${MESHROOM_BUNDLE}/aliceVision/share/libraw ${MESHROOM_BUNDLE}/aliceVision/share/man/ aliceVision/share/pkgconfig
 
+FROM nvidia/cuda:${CUDA_TAG}-base-centos${OS_TAG}
 
+ENV MESHROOM_BUNDLE=/opt/Meshroom_bundle \
+    PATH="${PATH}:${MESHROOM_BUNDLE}"
+
+RUN yum install -y centos-release-scl
+RUN yum install -y rh-python36
+RUN source scl_source enable rh-python36
+
+COPY --from=builder ${MESHROOM_BUNDLE} ${MESHROOM_BUNDLE}
+ENV LD_LIBRARY_PATH=${MESHROOM_BUNDLE}/aliceVision/lib:$LD_LIBRARY_PATH
